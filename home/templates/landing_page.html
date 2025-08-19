@@ -1,0 +1,33 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+    <title>Flower Delivery - Landing Page</title>
+</head>
+<body>
+    <header>
+        
+        <div class="logo">
+            <img src="{% static 'images/Group-6-modified.png' %}" alt="Flower Delivery Logo" class="logo-img"><h2>Flower Delivery</h2>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{% url 'login' %}">Sign In</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="landing-container">
+        <h1>Welcome to Flower Delivery!</h1>
+        <p>Your one-stop shop for beautiful flowers delivered right to your door.</p>
+        <button class="btn shop-now"><a href="{% url 'home' %}" class="shop-now-btn">Shop Now</a></button>
+
+    </div>
+    <footer>
+        <p>Flower Delivery. Award-winning blooms, delivered with elegance..</p>
+    </footer>
+</body>
+</html>
