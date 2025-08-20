@@ -9,6 +9,8 @@ urlpatterns=[
     path("login/", login, name="login"),
     path("create/", create, name="create"),
     path("shop/", shop, name="shop"),
-    path("cart/", cart, name="cart")
+    path("cart/", cart, name="cart"),
+    path("profile/", profile, name="profile"),
+
 
 ]   
