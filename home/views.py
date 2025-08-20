@@ -49,3 +49,6 @@ def create(request):
 def shop(request):
     flowers = Flower.objects.all()
     return render(request, 'shop.html', {'flowers': flowers})
+
+def cart(request):
+    return render(request, 'cart.html')

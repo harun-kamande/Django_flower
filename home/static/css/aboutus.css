@@ -1,0 +1,159 @@
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #05f80d;
+    color: rgb(243, 237, 237);
+}
+
+header .logo {
+    display: flex;
+    align-items: center;
+}
+
+header .logo img {
+    height: 40px;
+    margin-right: 10px;
+}
+
+header nav ul {
+    list-style-type: none;
+    display: flex;
+}
+
+header nav ul li {
+    margin: 0 10px;
+}
+
+header nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.about-hero {
+    text-align: center;
+    padding: 50px 20px;
+    background: #e8f5e9;
+}
+
+.about-hero h2 {
+    font-size: 36px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.about-hero p {
+    font-size: 18px;
+    color: #666;
+}
+
+.mission-vision {
+    display: flex;
+    justify-content: space-around;
+    padding: 40px 20px;
+    background-color: #f8f8f8;
+}
+
+.mission-vision .mission, .mission-vision .vision {
+    width: 45%;
+}
+
+.mission-vision h3 {
+    font-size: 28px;
+    color: #4CAF50;
+    margin-bottom: 10px;
+}
+
+.values {
+    padding: 40px 20px;
+    background-color: #ffffff;
+    text-align: center;
+}
+
+.values h3 {
+    font-size: 28px;
+    color: #4CAF50;
+    margin-bottom: 20px;
+}
+
+.values ul {
+    list-style: none;
+    padding: 0;
+}
+
+.values ul li {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.history {
+    padding: 40px 20px;
+    background-color: #f1f8e9;
+    text-align: center;
+}
+
+.history h3 {
+    font-size: 28px;
+    color: #4CAF50;
+    margin-bottom: 10px;
+}
+
+.history p {
+    font-size: 18px;
+    color: #666;
+    line-height: 1.6;
+}
+
+.team {
+    padding: 40px 20px;
+    background-color: #ffffff;
+    text-align: center;
+}
+
+.team h3 {
+    font-size: 28px;
+    color: #4CAF50;
+    margin-bottom: 20px;
+}
+
+.team-grid {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.team-member {
+    width: 250px;
+    text-align: center;
+}
+
+.team-member img {
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.team-member h4 {
+    font-size: 20px;
+    color: #333;
+    margin-top: 10px;
+}
+
+.team-member p {
+    font-size: 16px;
+    color: #666;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 14px;
+}

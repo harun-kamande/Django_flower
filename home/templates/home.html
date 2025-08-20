@@ -15,10 +15,10 @@
         </div>
         <nav>
             <ul>
-                <li><a href="homepage.html">Content</a></li>
-                <li><a href="aboutus.html">About Us</a></li>
-                <li><a href="shop.php">Shop</a></li>
-                <li><a href="cart.html">Cart</a></li>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'about' %}">About Us</a></li>
+                <li><a href="{% url 'shop' %}">Shop</a></li>
+                <li><a href="{% url 'cart' %}">Cart</a></li>
                 <li><a href="login.php">Login</a></li>
             </ul>
         </nav>
@@ -34,19 +34,19 @@
                 <img src="{% static 'images/lincoln-red-rose-bush-types.avif' %}" alt="Flower 1">
                 <h3>Roses</h3>
                 <p>Beautiful red roses for any occasion.</p>
-                <button class="btn shop-now"><a href="shop.php" class="shop-now-btn">Shop Now</a></button>
+                <button class="btn shop-now"><a href="{% url 'shop' %}" class="shop-now-btn">Shop Now</a></button>
             </div>
             <div class="flower-card">
                 <img src="{% static 'images/Timeless-Tulip.jpg' %}" alt="Flower 2">
                 <h3>Tulips</h3>
                 <p>Colorful tulips to brighten your day.</p>
-                <button class="btn shop-now"><a href="shop.php" class="shop-now-btn">Shop Now</a></button>
+                <button class="btn shop-now"><a href="{% url 'shop' %}" class="shop-now-btn">Shop Now</a></button>
             </div>
             <div class="flower-card">
                 <img src="{% static 'images/Leucanthemum_vulgare_Flower_2200px.jpg' %}" alt="Flower 3">
                 <h3>Daisies</h3>
                 <p>Fresh daisies to spread joy and happiness.</p>
-                <button class="btn shop-now"><a href="shop.php" class="shop-now-btn">Shop Now</a></button>
+            <button class="btn shop-now"><a href="{% url 'shop' %}" class="shop-now-btn">Shop Now</a></button>
             </div>
         </div>
     </div>
