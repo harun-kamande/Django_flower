@@ -1,0 +1,104 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Flower Delivery</title>
+    <link rel="stylesheet" href="{% static 'css/shoping.css' %}">
+    <style>
+        .delivered { color: green; font-weight: bold; }
+        .pending { color: red; font-weight: bold; }
+        .order-card {
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background: #f9f9f9;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        table, th, td {
+            border: 1px solid #aaa;
+        }
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+        h2, h3 {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="{% static 'images/Group-6-modified.png' %}" alt="Flower Delivery Logo">
+            <h1>Flower Delivery</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'shop' %}">Shop</a></li>
+                <li><a href="{% url 'cart' %}">Cart</a></li>
+                <li><a href="{% url 'profile' %}" class="active">Profile</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="profile-container">
+        <h2>Your Orders</h2>
+        {{user}}
+
+        {{orders}}
+
+        {% if orders %}
+            {% for order in orders %}
+                <div class="order-card">
+                    <h3>Order #{{ order.id }}</h3>
+                    <p><strong>Date:</strong> {{ order.date_ordered|date:"M d, Y H:i" }}</p>
+                    <p><strong>Delivery Address:</strong> {{ order.delivery_address }}</p>
+                    <p>Status: 
+                        {% if order.delivered %}
+                            <span class="delivered">Delivered</span>
+                        {% else %}
+                            <span class="pending">Pending</span>
+                        {% endif %}
+                    </p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Flower</th>
+                                <th>Quantity</th>
+                                <th>Price (KSH)</th>
+                                <th>Total (KSH)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in order.items.all %}
+                                <tr>
+                                    <td>{{ item.flower.name }}</td>
+                                    <td>{{ item.quantity }}</td>
+                                    <td>{{ item.flower.price }}</td>
+                                    <td>{{ item.quantity|floatformat:0|add:"0"|floatformat:0|default_if_none:"0"|add:item.flower.price }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>You haven’t placed any orders yet.</p>
+        {% endif %}
+    </section>
+
+    <footer>
+        <p>Flower Delivery. Award-winning blooms, delivered with elegance.</p>
+    </footer>
+</body>
+</html>

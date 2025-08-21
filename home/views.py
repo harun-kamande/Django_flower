@@ -1,6 +1,7 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from .models import Users, Flower, Order
+from django.shortcuts import render,redirect
+import json
+from django.http import HttpResponse,JsonResponse
+from .models import Users, Flower, Order,OrderItem
 from .hash_password import hash_password
 
 # Create your views here.
@@ -14,7 +15,20 @@ def add_cart(request):
     return render(request, 'cart.html' )
 
 def profile(request):
-    return render(request, 'profile.html')
+    user_id = request.session.get("user_id")
+    if not user_id:
+        # No user logged in
+        return render(request, "profile.html", {"user": None, "orders": []})
+
+    try:
+        user = Users.objects.get(id=user_id)
+        orders = user.orders.prefetch_related("items__flower").order_by("-date_ordered")
+    except Users.DoesNotExist:
+        # User not found in database
+        return render(request, "profile.html", {"user": None, "orders": []})
+
+    return render(request, "profile.html", {"user": user, "orders": orders})
+
 
 def login(request):
     # if request.mothod== "POST":
@@ -36,17 +50,13 @@ def login(request):
         password = request.POST.get('password')
         hashed_password = hash_password(password)
 
-        user=Users.objects.filter(email=email).first()
+        user = Users.objects.filter(email=email, password=hashed_password).first()
 
         if user:
-            return HttpResponse("User already exists")
+            request.session['user_id'] = user.id
+            return render(request, 'home.html', {'user': user})
         else:
-            user = Users.objects.filter(email=email, password=hashed_password).first()
-            if user:
-                request.session['user_id'] = user.id
-                return render(request, 'home.html', {'user': user})
-            else:
-                return HttpResponse("Invalid credentials")
+            return HttpResponse("Invalid credentials")
 
 
 def create(request):
@@ -70,3 +80,44 @@ def shop(request):
 
 def cart(request):
     return render(request, 'cart.html')
+
+def check_out(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body.decode("utf-8"))
+            cart = data.get("cart", [])
+            address = data.get("address", "No address provided")
+
+            if not cart:
+                return JsonResponse({"success": False, "error": "Cart is empty"})
+
+            # Get logged-in user
+            user_id = request.session.get("user_id")
+            if not user_id:
+                return JsonResponse({"success": False, "error": "User not logged in"})
+            
+            user = Users.objects.get(id=user_id)
+
+            # Create new order linked to user
+            order = Order.objects.create(
+                user=user,
+                delivery_address=address
+            )
+
+            # Add items
+            for item in cart:
+                flower = Flower.objects.get(name=item["name"])
+                OrderItem.objects.create(
+                    order=order,
+                    flower=flower,
+                    quantity=item["quantity"]
+                )
+                flower.remainig -= int(item["quantity"])
+                flower.save()
+
+            return JsonResponse({"success": True, "order_id": order.id})
+
+        except Exception as e:
+            return JsonResponse({"success": False, "error": str(e)})
+
+    return render(request, "check_out.html")

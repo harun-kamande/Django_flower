@@ -28,6 +28,16 @@
         <div id="cart-receipt">
             <!-- Cart receipt details will be dynamically inserted here -->
         </div>
+
+        <!-- Delivery address input -->
+        <div id="checkout-section" style="margin-top:20px; display:none;">
+            <h3>Enter Delivery Address</h3>
+            <input type="text" id="delivery-address" placeholder="Enter delivery address" style="width:100%; padding:8px;">
+            <button onclick="checkout()" style="margin-top:10px;">Confirm Checkout</button>
+        </div>
+
+        <!-- Success message -->
+        <div id="success-message" style="margin-top:20px; color:green; font-weight:bold;"></div>
     </section>
 
     <footer>
@@ -43,6 +53,7 @@
 
             if (cart.length === 0) {
                 cartDetails += "<p>Your cart is empty. Go back to <a href='{% url 'shop' %}'>Shop</a> to add items!</p>";
+                document.getElementById('checkout-section').style.display = "none";
             } else {
                 cartDetails += `
                     <table border="1" cellspacing="0" cellpadding="8">
@@ -72,7 +83,9 @@
                     </table>
                     <h4>Total Amount: KSH ${grandTotal.toFixed(2)}/=</h4>
                     <button onclick="clearCart()">Clear Cart</button>
-                    <button onclick="checkout()">Checkout</button>`;
+                    <button onclick="showCheckout()">Checkout</button>`;
+                
+                document.getElementById('checkout-section').style.display = "none"; // hide address input until clicked
             }
 
             document.getElementById('cart-receipt').innerHTML = cartDetails;
@@ -85,9 +98,48 @@
             displayCartReceipt();
         }
 
-        // Placeholder checkout
+        // Show checkout form
+        function showCheckout() {
+            document.getElementById('checkout-section').style.display = "block";
+        }
+
+        // Checkout without refreshing
         function checkout() {
-            alert("Checkout functionality coming soon!");
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let address = document.getElementById('delivery-address').value;
+
+            if (cart.length === 0) {
+                alert("Your cart is empty!");
+                return;
+            }
+            if (!address.trim()) {
+                alert("Please enter a delivery address!");
+                return;
+            }
+
+            fetch("{% url 'check_out' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token }}",
+                },
+                body: JSON.stringify({
+                    cart: cart,
+                    address: address
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    localStorage.removeItem('cart');
+                    document.getElementById('success-message').innerText = 
+                        "✅ Order placed successfully! Your order ID is " + data.order_id;
+                    displayCartReceipt();
+                    document.getElementById('checkout-section').style.display = "none";
+                } else {
+                    alert("Something went wrong: " + data.error);
+                }
+            });
         }
 
         // Load on page start

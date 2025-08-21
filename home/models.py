@@ -5,7 +5,7 @@ from django.db import models
 
 class Users(models.Model):
     date_joined = models.DateTimeField(auto_now_add=True)
-    username = models.CharField(max_length=100, unique=True)
+    username = models.CharField(max_length=100, unique=False)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=100)
     profile_photo = models.ImageField(upload_to='profile_photos/', null=True, blank=True)
@@ -26,12 +26,13 @@ class Flower(models.Model):
         return self.name
     
 class Order(models.Model):
+    user = models.ForeignKey(Users, on_delete=models.CASCADE, related_name="orders",null=False,default=1)
     date_ordered = models.DateTimeField(auto_now_add=True)
     delivered = models.BooleanField(default=False)
     delivery_address=models.CharField(max_length=255)
 
     def __str__(self):
-        return super().__str__()
+        return f"{self.user.username} - {self.date_ordered.strftime('%Y-%m-%d %H:%M:%S')    }"
     
 
 class OrderItem(models.Model):
