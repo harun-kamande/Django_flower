@@ -3,6 +3,8 @@ import json
 from django.http import HttpResponse,JsonResponse
 from .models import Users, Flower, Order,OrderItem
 from .hash_password import hash_password
+from django.contrib import messages
+
 
 # Create your views here.
 def home(request):
@@ -69,9 +71,18 @@ def create(request):
         password = request.POST.get('password')
         hashed_password = hash_password(password)
 
-        user = Users(email=email, password=hashed_password, username=username, profile_photo=profile_photo)
-        user.save()
-        return render(request, 'login.html')
+        # check if user exist in the database
+
+        user=Users.objects.filter(email=email).first()
+
+        if user:
+            message = "User already exists"
+            messages.error(request, message)
+            return render(request, 'create_account.html', {"error": message})
+        else:
+            user = Users(email=email, password=hashed_password, username=username, profile_photo=profile_photo)
+            user.save()
+            return render(request, 'login.html')
     return render(request, 'create_account.html')
 
 def shop(request):
