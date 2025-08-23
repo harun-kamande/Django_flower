@@ -56,7 +56,7 @@ def login(request):
 
         if user:
             request.session['user_id'] = user.id
-            return render(request, 'home.html', {'user': user})
+            return redirect('home')
         else:
             return HttpResponse("Invalid credentials")
 
@@ -82,7 +82,7 @@ def create(request):
         else:
             user = Users(email=email, password=hashed_password, username=username, profile_photo=profile_photo)
             user.save()
-            return render(request, 'login.html')
+            return redirect('login')
     return render(request, 'create_account.html')
 
 def shop(request):
