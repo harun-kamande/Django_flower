@@ -1,0 +1,56 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/homepage.css' %}">
+    <title>Flower Delivery - Home</title>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="{% static 'images/Group-6-modified.png' %}" alt="Flower Delivery Logo" class="logo-img"> <h2>Flower Delivery</h2> 
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'about' %}">About Us</a></li>
+                <li><a href="{% url 'shop' %}">Shop</a></li>
+                <li><a href="{% url 'cart' %}">Cart</a></li>
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'profile' %}">Profile</a></li>
+                <li><a href="http://127.0.0.1:8000/admin/">Admin</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="hero-section">
+        <h1>Welcome to Flower Delivery!</h1>
+        <p>Fresh flowers delivered to your door.</p>
+    </div>
+    <div class="featured-flowers">
+        <h2>Featured Flowers</h2>
+        <div class="flower-grid">
+            <div class="flower-card">
+                <img src="{% static 'images/lincoln-red-rose-bush-types.avif' %}" alt="Flower 1">
+                <h3>Roses</h3>
+                <p>Beautiful red roses for any occasion.</p>
+                <button class="btn shop-now"><a href="{% url 'shop' %}" class="shop-now-btn">Shop Now</a></button>
+            </div>
+            <div class="flower-card">
+                <img src="{% static 'images/Timeless-Tulip.jpg' %}" alt="Flower 2">
+                <h3>Tulips</h3>
+                <p>Colorful tulips to brighten your day.</p>
+                <button class="btn shop-now"><a href="{% url 'shop' %}" class="shop-now-btn">Shop Now</a></button>
+            </div>
+            <div class="flower-card">
+                <img src="{% static 'images/Leucanthemum_vulgare_Flower_2200px.jpg' %}" alt="Flower 3">
+                <h3>Daisies</h3>
+                <p>Fresh daisies to spread joy and happiness.</p>
+            <button class="btn shop-now"><a href="{% url 'shop' %}" class="shop-now-btn">Shop Now</a></button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
