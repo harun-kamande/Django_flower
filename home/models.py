@@ -30,7 +30,7 @@ class Order(models.Model):
     date_ordered = models.DateTimeField(auto_now_add=True)
     delivered = models.BooleanField(default=False)
     delivery_address=models.CharField(max_length=255)
-    total_cost = models.DecimalField(max_digits=10, decimal_places=2, default=0.00,null=False)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00,null=False)
 
     @property
     def total_cost(self):

@@ -113,10 +113,17 @@ def check_out(request):
             
             user = Users.objects.get(id=user_id)
 
-            # Create new order linked to user
+            # Calculate total price
+            total_price = 0
+            for item in cart:
+                flower = Flower.objects.get(name=item["name"])
+                total_price += flower.price * int(item["quantity"])
+
+            # Create new order linked to user with total_price
             order = Order.objects.create(
                 user=user,
-                delivery_address=address
+                delivery_address=address,
+                total_price=total_price
             )
 
             # Add items
