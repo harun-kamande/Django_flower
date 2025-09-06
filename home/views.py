@@ -16,17 +16,21 @@ def about(request):
 def add_cart(request):
     return render(request, 'cart.html' )
 
+from django.db.models import F, Sum, DecimalField, ExpressionWrapper
+
 def profile(request):
     user_id = request.session.get("user_id")
     if not user_id:
-        # No user logged in
         return render(request, "profile.html", {"user": None, "orders": []})
 
     try:
         user = Users.objects.get(id=user_id)
-        orders = user.orders.prefetch_related("items__flower").order_by("-date_ordered")
+        orders = (
+            user.orders
+            .prefetch_related("items__flower")
+            .order_by("-date_ordered")
+        )
     except Users.DoesNotExist:
-        # User not found in database
         return render(request, "profile.html", {"user": None, "orders": []})
 
     return render(request, "profile.html", {"user": user, "orders": orders})

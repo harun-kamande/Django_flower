@@ -52,9 +52,7 @@
 
     <section class="profile-container">
         <h2>Your Orders</h2>
-        {{user}}
-
-        {{orders}}
+        {{ user }}
 
         {% if orders %}
             {% for order in orders %}
@@ -81,15 +79,20 @@
                         </thead>
                         <tbody>
                             {% for item in order.items.all %}
+                                {% widthratio item.flower.price 1 item.quantity as item_total %}
                                 <tr>
                                     <td>{{ item.flower.name }}</td>
                                     <td>{{ item.quantity }}</td>
                                     <td>{{ item.flower.price }}</td>
-                                    <td>{{ item.quantity|floatformat:0|add:"0"|floatformat:0|default_if_none:"0"|add:item.flower.price }}</td>
+                                    <td>{{ item_total }}</td>
                                 </tr>
                             {% endfor %}
-                        </tbody>
+                        </tbody>    
                     </table>
+
+                    <p><strong>Order Total:</strong> {{ orders.total }}  {{orders}}</p>
+
+                    </p>
                 </div>
             {% endfor %}
         {% else %}
