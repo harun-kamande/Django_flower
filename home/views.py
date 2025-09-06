@@ -7,6 +7,9 @@ from django.contrib import messages
 
 
 # Create your views here.
+def land_page(request):
+    return redirect("login")
+
 def home(request):
     return render(request, 'home.html')
 
