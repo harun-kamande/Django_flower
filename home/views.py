@@ -7,6 +7,9 @@ from django.contrib import messages
 
 
 # Create your views here.
+def land_page(request):
+    return redirect("login")
+
 def home(request):
     return render(request, 'home.html')
 
@@ -16,17 +19,21 @@ def about(request):
 def add_cart(request):
     return render(request, 'cart.html' )
 
+from django.db.models import F, Sum, DecimalField, ExpressionWrapper
+
 def profile(request):
     user_id = request.session.get("user_id")
     if not user_id:
-        # No user logged in
         return render(request, "profile.html", {"user": None, "orders": []})
 
     try:
         user = Users.objects.get(id=user_id)
-        orders = user.orders.prefetch_related("items__flower").order_by("-date_ordered")
+        orders = (
+            user.orders
+            .prefetch_related("items__flower")
+            .order_by("-date_ordered")
+        )
     except Users.DoesNotExist:
-        # User not found in database
         return render(request, "profile.html", {"user": None, "orders": []})
 
     return render(request, "profile.html", {"user": user, "orders": orders})
@@ -109,10 +116,17 @@ def check_out(request):
             
             user = Users.objects.get(id=user_id)
 
-            # Create new order linked to user
+            # Calculate total price
+            total_price = 0
+            for item in cart:
+                flower = Flower.objects.get(name=item["name"])
+                total_price += flower.price * int(item["quantity"])
+
+            # Create new order linked to user with total_price
             order = Order.objects.create(
                 user=user,
-                delivery_address=address
+                delivery_address=address,
+                total_price=total_price
             )
 
             # Add items
